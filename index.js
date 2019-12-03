@@ -5,9 +5,7 @@ const mongoose = require("mongoose");
 
 dotenv.config();
 
-//connection to db
-mongoose.set("useFindAndModify", false);
-
+// Connection to database
 mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true}, () => {
     console.log("Connected to db!");
 
