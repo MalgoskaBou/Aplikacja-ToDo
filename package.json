@@ -1,0 +1,28 @@
+{
+  "name": "Aplikacja-ToDo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MalgoskaBou/Aplikacja-ToDo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MalgoskaBou/Aplikacja-ToDo/issues"
+  },
+  "homepage": "https://github.com/MalgoskaBou/Aplikacja-ToDo#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.13"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  }
+}
