@@ -16,5 +16,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+// Urlencoded will allow us to extract the data from the form by adding her to the body property of the request
+app.use(express.urlencoded({ extended: true }));
 
 // In terminal type "npm start" to start nodemon
