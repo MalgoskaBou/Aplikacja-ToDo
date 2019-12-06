@@ -1,17 +1,15 @@
 const mongoose = require('mongoose');
+const {userSchema} = require('./user');
+const {listSchema} = require('./list');
 
 const taskSchema = new mongoose.Schema({
     user_id: {
-        type: String,
+        type: userSchema,
         required: true,
-        minlength: 3,
-        maxlength: 1024,
     },
     list_id: {
-        type: String,
+        type: listSchema,
         required: true,
-        minlength: 3,
-        maxlength: 30,
     },
     task_name: {
         type: String,
