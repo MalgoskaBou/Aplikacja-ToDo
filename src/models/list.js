@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
+const {userSchema} = require('./user');
 
 const listSchema = new mongoose.Schema({
     user_id: {
-        type: String,
+        type: userSchema,
         required: true,
-        minlength: 3,
-        maxlength: 1024,
     },
     list_name: {
         type: String,
