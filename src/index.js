@@ -1,23 +1,30 @@
 const dotenv = require("dotenv");
 const express = require("express");
-const cors = require('cors')
-const mongoose = require("mongoose");
+const cors = require('cors');
+// Import database setup
 require('./db/db');
+// Import routes
+const users = require("../routes/users");
+const lists = require("../routes/lists");
+const tasks = require("../routes/tasks");
+const auth = require("../routes/auth");
 
 dotenv.config();
-
 const port = process.env.PORT;
-
 const app = express();
 const router = express.Router();
 
 // Middleware 
-// not sure if the order is correct
 app.use(cors());
-app.use(express.json());
 app.use("/static", express.static("public"));
-// Urlencoded will allow us to extract the data from the form by adding her to the body property of the request
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+// Routes
+app.use('/api', users);
+app.use('/api', lists);
+app.use('/api', tasks);
+app.use('/api', auth);
 
 // Launch server
 app.listen(port, err => {
