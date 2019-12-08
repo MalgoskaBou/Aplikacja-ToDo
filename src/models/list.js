@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const {userSchema} = require('./user');
+const {User} = require('./user');
 
 const listSchema = new mongoose.Schema({
     user_id: {
-        type: userSchema,
-        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        required: User,
     },
     list_name: {
         type: String,
