@@ -1,9 +1,7 @@
-const mongoose = require('mongoose');
-// const validator = require('validator'); ? const joi = require('joi'); ?
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+    _id: Schema.Types.ObjectId,
     login: {
         type: String,
         required: true,
@@ -16,12 +14,12 @@ const userSchema = new mongoose.Schema({
         minlength: 8,
         maxlength: 1024,
     },
-    tokens: [],
+    lists: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "List",
+    }],
 });
 
-userSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({})
-    return token
-};
+const User = mongoose.model("User", userSchema);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = User;
