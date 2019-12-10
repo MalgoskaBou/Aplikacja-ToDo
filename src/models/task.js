@@ -3,16 +3,17 @@ const mongoose = require("mongoose");
 const taskSchema = new mongoose.Schema({
   _list: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "List"
+    ref: "List",
   },
   name: {
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 50
+    maxlength: 50,
   },
   checked: {
-    type: Boolean
+    type: Boolean,
+    default: false,
   }
 });
 
