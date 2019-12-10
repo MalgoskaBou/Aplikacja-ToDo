@@ -17,6 +17,8 @@ router.post("/", /*[auth],*/ async (req, res) => {
         const user = await User.findById(req.body.userID);
         // If not send 400 status
         if (!user) return res.status(400).send("User not found.");
+        // If yes check if user has reached limit
+        if (user.lists.length == 3) return res.status(400).send("This user has reached the limit - max 3 lists.");
         // If not create new list and save it to db
         const list = new List({
             _user: user._id,

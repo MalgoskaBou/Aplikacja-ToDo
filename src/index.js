@@ -33,6 +33,6 @@ app.use("/api/users", users);
 
 /*
 POST      api/users     - register new user
-POST      api/lists       - create new list
-POST      api/tasks     - add new task to list (max 8 in each list)
+POST      api/lists       - create new list (max 3 for each user)
+POST      api/tasks     - add new task to list (max 5 in each list)
 */

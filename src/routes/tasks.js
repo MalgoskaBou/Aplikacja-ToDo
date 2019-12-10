@@ -18,7 +18,7 @@ router.post("/", /*[auth],*/ async (req, res) => {
         // If not send 400 status
         if (!list) return res.status(400).send("List not found.");
         // If yes check if list is filled
-        if (list.tasks.length == 8) return res.status(400).send("Given list is filled.");
+        if (list.tasks.length == 5) return res.status(400).send("The list is filled.");
         // If not create new task and save it to db
         const task = new Task({
             _list: list._id,
