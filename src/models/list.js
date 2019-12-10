@@ -23,6 +23,7 @@ const List = mongoose.model("List", listSchema);
 
 function validateList(list) {
   const schema = Joi.object({
+    _user: Joi.string().required(),
     name: Joi.string()
       .min(1)
       .max(30)
