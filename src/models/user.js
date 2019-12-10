@@ -6,6 +6,7 @@ const userSchema = new Schema({
   login: {
     type: String,
     required: true,
+    unique: true,
     minlength: 3,
     maxlength: 30
   },
@@ -15,15 +16,13 @@ const userSchema = new Schema({
     minlength: 5,
     maxlength: 1024
   },
-  lists: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "List"
-    }
-  ]
+  lists: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "List"
+  }]
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function (next) {
   // Hash the password before saving the user model
   const user = this;
   if (user.isModified("password")) {
