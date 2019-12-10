@@ -1,27 +1,34 @@
-const mongoose = require('mongoose');
-// const validator = require('validator'); ? const joi = require('joi'); ?
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema({
-    login: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 30,
-    },
-    password: {
-        type: String,
-        required: true,
-        minlength: 8,
-        maxlength: 1024,
-    },
-    tokens: [],
+const userSchema = new Schema({
+  login: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 3,
+    maxlength: 30
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 1024
+  },
+  lists: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "List"
+  }]
 });
 
-userSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({})
-    return token
-};
+userSchema.pre("save", async function (next) {
+  // Hash the password before saving the user model
+  const user = this;
+  if (user.isModified("password")) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+  next();
+});
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
