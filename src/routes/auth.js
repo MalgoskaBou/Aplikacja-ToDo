@@ -22,12 +22,19 @@ router.post("/", async (req, res) => {
   });
 
   function validate (req) {
-      const schema = {
-          login: 
-          password: 
-      };
+      const schema = Joi.object ({
+          login: Joi.string()
+          .min(3)
+          .max(30)
+          .required()
+          .login(),
+          password: Joi.string()
+          .min(5)
+          .max(1024)
+          .required()
+      });
 
-      return 
+      return schema.validate(req);
   }
 
   module.exports = router;
