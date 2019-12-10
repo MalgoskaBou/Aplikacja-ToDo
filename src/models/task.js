@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("@hapi/joi");
 
 const taskSchema = new mongoose.Schema({
   _list: {
@@ -17,5 +18,16 @@ const taskSchema = new mongoose.Schema({
 });
 
 const Task = mongoose.model("Task", taskSchema);
+function validateTask(task) {
+  const schema = Joi.object({
+    name: Joi.string()
+      .min(3)
+      .max(50)
+      .required(),
+    checked: Joi.boolean()
+  });
+  return schema.validate(task);
+}
 
 module.exports = Task;
+exports.validate = validateTask;
