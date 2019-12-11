@@ -31,13 +31,17 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.methods.generateAuthToken = async function() {
+userSchema.methods.generateAuthToken = function() {
   // Generate an auth token for the user
-  const user = this
-  const token = jwt.sign({_id: user._id}, process.env.JWT_KEY)
-  user.tokens = user.tokens.concat({token})
-  await user.save()
-  return token
-}
+  const token = jwt.sign(
+    {
+      _id: this._id,
+      login: this.login,
+      password: this.password
+    },
+    config.get('jwtPrivateKey')
+    );
+  return token;
+};
 
 module.exports = mongoose.model("User", userSchema);
