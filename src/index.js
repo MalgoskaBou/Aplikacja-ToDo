@@ -1,9 +1,15 @@
+const config = require("config");
 const dotenv = require("dotenv");
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
+
+if (!config.get('jwtPrivateKey')) {
+  console.log('FATAL ERROR: jwtPrivateKey is not defined.');
+  process.exit(1);
+}
 
 dotenv.config();
 require("./db/db");
