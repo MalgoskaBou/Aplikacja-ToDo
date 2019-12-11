@@ -10,16 +10,14 @@ router.post('/', async (req, res) => {
 
     // Check if this user already exists
     let user = await User.findOne({ login: req.body.login });
-    if (user) {
-        return res.status(400).send('That user already exists!');
-    } else {
+    if (user) return res.status(400).send('That user already exists!');
     // Insert the new user if they do not exist yet
     user = new User({
         login: req.body.login,
         password: req.body.password
     });
-        await user.save();
-        res.send(user);
+    await user.save();
+    res.send(user);
     }
 });
 
