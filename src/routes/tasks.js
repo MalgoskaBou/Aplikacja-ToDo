@@ -1,3 +1,4 @@
+const auth = require("../middleware/auth");
 const Task = require("../models/task");
 const List = require("../models/list");
 // const auth = require("../middleware/auth");
@@ -10,7 +11,7 @@ router.get("/", async (req, res) => {
     res.send(tasks)
 })
 
-router.post("/", /*[auth],*/ async (req, res) => {
+router.post("/", auth, async (req, res) => {
     // Add task to given list
     try {
         // Check if given list exist
