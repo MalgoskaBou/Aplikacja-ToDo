@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const users = require("./routes/users");
+const auth = require("./routes/auth");
 
 dotenv.config();
 require("./db/db");
@@ -27,5 +28,6 @@ app.listen(port, err => {
 
 // Routes
 app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 // In terminal type "npm start" to start nodemon
