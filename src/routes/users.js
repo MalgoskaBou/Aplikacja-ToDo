@@ -1,4 +1,6 @@
-// Add user to database 
+// Add user to database
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const User = require("../models/user");
 const express = require("express");
 const _ = require('lodash');
@@ -17,7 +19,8 @@ router.post('/', async (req, res) => {
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
-    res.send(_.pick(user, ['_id', 'login']));
+    const token = jwt.sign({ _id: user._id}, config.get('jwtPrivateKey'));
+    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'login']));
 });
 
 module.exports = router;
