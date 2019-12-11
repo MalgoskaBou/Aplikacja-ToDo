@@ -1,3 +1,4 @@
+const auth = require("../middleware/auth");
 const User = require("../models/user");
 const List = require("../models/list");
 // const auth = require("../middleware/auth");
@@ -10,7 +11,7 @@ router.get("/", async (req, res) => {
     res.send(lists)
 })
 
-router.post("/", /*[auth],*/ async (req, res) => {
+router.post("/", auth, async (req, res) => {
     // Add new list to user
     try {
         // Check if given user exist
