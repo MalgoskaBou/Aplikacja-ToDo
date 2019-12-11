@@ -35,4 +35,7 @@ app.use("/api/users", users);
 POST      api/users     - register new user
 POST      api/lists       - create new list (max 3 for each user)
 POST      api/tasks     - add new task to list (max 5 in each list)
+
+DELETE      api/tasks/:id     - delete task from list
+DELETE      api/lists/:id       - delete list with all contained task
 */
