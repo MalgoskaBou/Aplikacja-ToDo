@@ -16,17 +16,14 @@ const userSchema = new Schema({
     minlength: 5,
     maxlength: 1024
   },
-  lists: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "List"
-  }]
 });
 
 userSchema.pre("save", async function (next) {
   // Hash the password before saving the user model
   const user = this;
   if (user.isModified("password")) {
-    user.password = await bcrypt.hash(user.password, 8);
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
   }
   next();
 });

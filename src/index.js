@@ -13,8 +13,8 @@ require("./db/db");
 
 // Connection with db
 mongoose.connect(process.env.DB_CONNECT)
-    .then(() => console.log('Now connected to MongoDB!'))
-    .catch(err => console.error('Something went wrong', err));
+    .then(() => console.log('Connected to database.'))
+    .catch(err => console.error('Something went wrong...', err));
 
 // Server
 const app = express();

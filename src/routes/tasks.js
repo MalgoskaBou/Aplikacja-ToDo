@@ -4,10 +4,11 @@ const List = require("../models/list");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-    const tasks = await Task.find()
+router.get("/", /*[auth],*/ async (req, res) => {
+     // Return users tasks
+    const tasks = await Task.find({"_userID": req.body.userID})
         .select("-__v");
-    res.send(tasks)
+    res.send(tasks);
 })
 
 router.post("/", /*[auth],*/ async (req, res) => {
@@ -17,22 +18,20 @@ router.post("/", /*[auth],*/ async (req, res) => {
         const list = await List.findById(req.body.listID);
         // If not send 400 status
         if (!list) return res.status(400).send("List not found.");
-        // If yes check if list is filled
-        if (list.tasks.length == 5) return res.status(400).send("The list is filled.");
-        // If not create new task and save it to db
+        // Check if user reached tasks amount limit
+        const savedTasks = await Task.find({"_userID": req.body.userID});
+        if (savedTasks.length == 15) return res.status(400).send("The user has reached tasks amount limit (max 15).");
+        // Create new task and save it to db
         const task = new Task({
-            _list: list._id,
+            _listID: req.body.userID,
             name: req.body.name,
         });
         await task.save();
-        // Add task to array in given list and save updated list
-        list.tasks.push(task);
-        await list.save();
         // Send new task as a response    
         res.status(201).send(task);
     } catch (error) {
-        // Catch error and send response
-        res.status(400).send(error.message);
+        // WHAT STATUS CODE SHOULD BE USED?
+        res.status(500).send(error.message);
     }
 })
 
