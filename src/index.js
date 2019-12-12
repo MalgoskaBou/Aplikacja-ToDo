@@ -6,17 +6,17 @@ const bodyParser = require("body-parser");
 const tasks = require("./routes/tasks");
 const lists = require("./routes/lists");
 const users = require("./routes/users");
+const port = process.env.PORT;
 
 dotenv.config();
 require("./db/db");
 
-const port = process.env.PORT;
-
-// Connection with server
+// Connection with db
 mongoose.connect(process.env.DB_CONNECT)
     .then(() => console.log('Now connected to MongoDB!'))
     .catch(err => console.error('Something went wrong', err));
 
+// Server
 const app = express();
 
 // Middleware
@@ -39,5 +39,5 @@ app.use("/api/users", users);
 /*
 POST      api/users     - register new user
 POST      api/lists       - create new list (max 3 for each user)
-POST      api/tasks     - add new task to list (max 5 in each list)
+POST      api/tasks     - add new task to list (max 15 for each user in general)
 */
