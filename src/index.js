@@ -1,24 +1,29 @@
 const dotenv = require("dotenv");
-const express = require("express");
 const cors = require("cors");
+const express = require("express");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const tasks = require("./routes/tasks");
 const lists = require("./routes/lists");
 const users = require("./routes/users");
+const port = process.env.PORT;
 
 dotenv.config();
 require("./db/db");
 
-const port = process.env.PORT;
+// Connection with db
+mongoose.connect(process.env.DB_CONNECT)
+    .then(() => console.log('Connected to database.'))
+    .catch(err => console.error('Something went wrong...', err));
+
+// Server
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use("/static", express.static("public"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // Launch server
 app.listen(port, err => {
@@ -34,7 +39,7 @@ app.use("/api/users", users);
 /*
 POST      api/users     - register new user
 POST      api/lists       - create new list (max 3 for each user)
-POST      api/tasks     - add new task to list (max 5 in each list)
+POST      api/tasks     - add new task to list (max 15 for each user in general)
 
 DELETE      api/tasks/:id     - delete task from list
 DELETE      api/lists/:id       - delete list with all contained task
