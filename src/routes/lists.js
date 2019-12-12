@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const List = require("../models/list");
+const Task = require("../models/task");
 // const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
@@ -31,6 +32,26 @@ router.post("/", /*[auth],*/ async (req, res) => {
         res.status(201).send(list);
     } catch (error) {
         // WHAT STATUS CODE SHOULD BE USED?
+        res.status(400).send(error.message);
+    }
+})
+
+router.delete("/:id", async (req, res) => {
+    // Remove the list and all tasks from that list
+    try {
+        const listID = req.params.id;
+        // Search for the list
+        const list = await List.findById(listID);
+        // If it doesn't exist send 400 status
+        if (!list) return res.status(400).send("List not found.");
+        // Remove the list from the lists collection
+        await List.deleteOne({_id: listID});
+        // Remove tasks
+        await Task.deleteMany({_listID: listID});
+        // Send 200 status
+        res.status(200).send("List is successfully removed.");
+    } catch (error) {
+        // Catch error and send response
         res.status(400).send(error.message);
     }
 })
