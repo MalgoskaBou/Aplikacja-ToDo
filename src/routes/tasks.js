@@ -17,13 +17,14 @@ router.post("/", /*[auth],*/ async (req, res) => {
         // Check if given list exist
         const list = await List.findById(req.body.listID);
         // If not send 400 status
-        if (!list) return res.status(400).send("List not found.");
+        if (!list) return res.status(400).send("User not found.");
         // Check if user reached tasks amount limit
         const savedTasks = await Task.find({"_userID": req.body.userID});
         if (savedTasks.length == 15) return res.status(400).send("The user has reached tasks amount limit (max 15).");
         // Create new task and save it to db
         const task = new Task({
-            _listID: req.body.userID,
+            _userID: req.body.userID,
+            _listID: req.body.listID,
             name: req.body.name,
         });
         await task.save();
