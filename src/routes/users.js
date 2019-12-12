@@ -1,6 +1,5 @@
-// Add user to database
-const jwt = require('jsonwebtoken');
-const config = require('config');
+// const jwt = require('jsonwebtoken');
+// const config = require('config');
 const User = require("../models/user");
 const express = require("express");
 const _ = require('lodash');
