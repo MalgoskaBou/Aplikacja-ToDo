@@ -10,7 +10,6 @@
 >User only able to access their own ToDo list.
 
 ## Users Endpoint
-***
 Input params:
 - login (String)
 - password (String)
@@ -18,7 +17,6 @@ Input params:
 >**POST**        api/users / Register new user
 
 ## ToDo Endpoint
-***
 Input params:
 - _userID (mongoose.Schema.Types.ObjectId)
 - _listID (mongoose.Schema.Types.ObjectId)
@@ -34,7 +32,6 @@ Input params:
 >**DELETE**     api/lists/:id / delete list with all contained task
 
 ## Authors
-***
 Created by CodersCamp's members under the supervision of Małgorzata Bousoltane:\
 [@Ievgeniia Abdulina](https://github.com/IevgeniiaAbdulina)\
 [@Iwona](https://github.com/Crazysh8)\
