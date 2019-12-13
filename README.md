@@ -32,7 +32,7 @@ Input params:
 >**DELETE**     api/lists/:id / delete list with all contained task
 
 ## Authors
-Created by CodersCamp's members under the supervision of Małgorzata Bousoltane:\
+Created by CodersCamp's members under the supervision of [@MalgoskaBou](https://github.com/MalgoskaBou):\
 [@Ievgeniia Abdulina](https://github.com/IevgeniiaAbdulina)\
 [@Iwona](https://github.com/Crazysh8)\
 [@Daria Kawalec](https://github.com/dariaka)\
