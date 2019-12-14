@@ -36,7 +36,7 @@ Input params:
 >**PATCH**      api/tasks/:id/move_to/:listID / Move a task to another list
 
 ## Authors
-Created by CodersCamp's members under the supervision of Małgorzata Bousoltane:\
+Created by CodersCamp's members under the supervision of [@MalgoskaBou](https://github.com/MalgoskaBou):\
 [@Ievgeniia Abdulina](https://github.com/IevgeniiaAbdulina)\
 [@Iwona](https://github.com/Crazysh8)\
 [@Daria Kawalec](https://github.com/dariaka)\
