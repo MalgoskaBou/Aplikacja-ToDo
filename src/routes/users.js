@@ -1,4 +1,5 @@
-const User = require("../models/user");
+// const auth = require("../middleware/auth");
+// const { User, validateUser } = require("../models/user");
 const express = require("express");
 const _ = require("lodash");
 const router = express.Router();
@@ -7,10 +8,9 @@ router.post("/", async (req, res) => {
   
   // Register new user
 
-  /* To zwraca błąd "validate is not defined"  ;)
-    const {error} = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-*/
+  /* To zwraca błąd "validate is not defined"  ;) */
+  // const {error} = validateUser(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ login: req.body.login });
   if (user) return res.status(400).send("That user already exists!");
@@ -19,9 +19,8 @@ router.post("/", async (req, res) => {
   await user.save();
   res.status(201).send("User successfully added.");
 
-  /* To chyba nie zadziała bo w modelu usera na devie nie ma takiej funkcji */
-    const token = user.generateAuthToken();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'login']));
+  const token = user.generateAuthToken();
+  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'login']));
 
 });
 
