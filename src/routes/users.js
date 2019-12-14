@@ -8,7 +8,8 @@ router.post("/", async (req, res) => {
   
   // Register new user
 
-  /* To zwraca błąd "validate is not defined"  ;) */
+  /* To zwraca błąd "validate is not defined" 
+  edit: nie ma jeszcze validacji na dev, więc nie sprawdzę czy działa ;) */
   // const {error} = validateUser(req.body);
   // if (error) return res.status(400).send(error.details[0].message);
 
