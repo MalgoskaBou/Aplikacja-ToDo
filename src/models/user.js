@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const Joi = require("@hapi/joi");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -15,10 +16,23 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
     maxlength: 1024
-  },
+  }
 });
+function validateUser(user) {
+  const schema = Joi.object({
+    login: Joi.string()
+      .min(3)
+      .max(30)
+      .required(),
+    password: Joi.string()
+      .min(5)
+      .max(1024)
+      .required()
+  });
+  return schema.validate(user);
+}
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function(next) {
   // Hash the password before saving the user model
   const user = this;
   if (user.isModified("password")) {
@@ -29,3 +43,4 @@ userSchema.pre("save", async function (next) {
 });
 
 module.exports = mongoose.model("User", userSchema);
+exports.validate = validateUser;
