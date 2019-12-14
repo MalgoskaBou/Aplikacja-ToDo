@@ -1,12 +1,10 @@
-// const jwt = require("jsonwebtoken");
-// const config = require("config");
 const User = require("../models/user");
 const express = require("express");
 const _ = require("lodash");
-const bcrypt = require("bcrypt");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
+  
   // Register new user
 
   /* To zwraca błąd "validate is not defined"  ;)
