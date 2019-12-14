@@ -1,9 +1,11 @@
+const Joi = require("@hapi/joi");
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const {userSchema} = require('../models/user');
 const express = require('express');
 // const auth = require('../middleware/auth');
+
 const router = express.Router();
 
 router.post("/", async (req, res) => {
@@ -15,7 +17,7 @@ router.post("/", async (req, res) => {
   
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send('Invalid login or password.');
-
+    // header-x dodatkowy parametr
     const token = user.generateAuthToken();
     res.send(token);
   });
