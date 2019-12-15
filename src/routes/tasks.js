@@ -7,32 +7,31 @@ const _ = require("lodash");
 const router = express.Router();
 
 router.get("/",/*[auth],*/ async (req, res) => {
+    // TODO: ObjectId validation
     try {
         const queryObj = req.query;
 
         if (queryObj.user) {
             const user = await User.findById(queryObj.user);
+            let tasks;
             if (!user) {
                 return res.status(400).send("User not found.");
             } else {
                 if (queryObj.list && queryObj.checked) {
                     // /tasks?user=5df1ba13a325462fdc2e2558&list=5df2685e04f77f2aa48d2ddd&checked=false
-                    const tasks = await Task.find({_userID: queryObj.user, _listID: queryObj.list, checked: queryObj.checked}).select("-__v");
-                    res.status(200).send(tasks);
+                    tasks = await Task.find({_userID: queryObj.user, _listID: queryObj.list, checked: queryObj.checked}).select("-__v");
                 } else if (queryObj.list) {
                     // /tasks?user=5df1ba13a325462fdc2e2558&list=5df2685e04f77f2aa48d2ddd
-                    const tasks = await Task.find({_userID: queryObj.user, _listID: queryObj.list}).select("-__v");
-                    res.status(200).send(tasks);
+                    tasks = await Task.find({_userID: queryObj.user, _listID: queryObj.list}).select("-__v");
                 } else if (queryObj.checked) {
                     // /tasks?user=5df1ba13a325462fdc2e2558&checked=true
                     // /tasks?user=5df1ba13a325462fdc2e2558&checked=false
-                    const tasks = await Task.find({_userID: queryObj.user, checked: queryObj.checked}).select("-__v");
-                    res.status(200).send(tasks);
+                    tasks = await Task.find({_userID: queryObj.user, checked: queryObj.checked}).select("-__v");
                 } else {
                     // /tasks?user=5df1ba13a325462fdc2e2558
-                    const tasks = await Task.find({ _userID: queryObj.user }).select("-__v");
-                    res.status(200).send(tasks);
+                    tasks = await Task.find({ _userID: queryObj.user }).select("-__v");
                 }
+                res.status(200).send(tasks);
             }
         } else {
             // /tasks/
@@ -67,9 +66,7 @@ router.post("/",/*[auth],*/ async (req, res) => {
       // Check if user reached tasks amount limit
       const savedTasks = await Task.find({ _userID: req.body.userID });
       if (savedTasks.length == 15)
-        return res
-          .status(400)
-          .send("The user has reached tasks amount limit (max 15).");
+        return res.status(400).send("The user has reached tasks amount limit (max 15).");
       // Create new task and save it to db
       const task = new Task({
         _userID: req.body.userID,
@@ -80,7 +77,6 @@ router.post("/",/*[auth],*/ async (req, res) => {
       // Send new task as a response
       res.status(201).send(task);
     } catch (error) {
-      // WHAT STATUS CODE SHOULD BE USED?
       res.status(500).send(error.message);
     }
   }
@@ -100,7 +96,7 @@ router.delete("/:id", async (req, res) => {
     res.status(200).send("Task is successfully removed.");
   } catch (error) {
     // Catch error and send response
-    res.status(400).send(error.message);
+    res.status(500).send(error.message);
   }
 });
 
