@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
+const Joi = require('@hapi/joi');
 const bcrypt = require('bcryptjs');
 const _ = require('lodash');
 const {userSchema} = require('../models/user');
 const express = require('express');
-// const auth = require('../middleware/auth');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-  
+
     let user = await userSchema.findOne({ login: req.body.login });
     if (!user) return res.status(400).send('Invalid login or password.');
   

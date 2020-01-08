@@ -1,3 +1,4 @@
+const auth = require("../middleware/auth");
 const Task = require("../models/task");
 const List = require("../models/list");
 const User = require("../models/user");
@@ -34,8 +35,8 @@ router.get("/",/*[auth],*/ async (req, res) => {
                 res.status(200).send(tasks);
             }
         } else {
-            // /tasks/
             // /tasks?userrr=5df1ba13a325462fdc2e2558
+            // /tasks/
             // etc
             res.status(400).send("Invalid endpoint.");
         }
@@ -43,16 +44,10 @@ router.get("/",/*[auth],*/ async (req, res) => {
         res.status(500).send(err.message);
     }
   }
+
 );
 
-// router.get("/",/*[auth],*/ async (req, res) => {
-//     // Return users tasks
-//     const tasks = await Task.find({ _userID: req.body.user }).select("-__v");
-//     res.send(tasks);
-//   }
-// );
-
-router.post("/",/*[auth],*/ async (req, res) => {
+router.post("/", auth, async (req, res) => {
     // Add task to given list
     try {
       // Check if given user exist

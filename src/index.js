@@ -1,3 +1,4 @@
+const config = require("config");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const express = require("express");
@@ -7,6 +8,13 @@ const tasks = require("./routes/tasks");
 const lists = require("./routes/lists");
 const users = require("./routes/users");
 const port = process.env.PORT;
+
+const auth = require("./routes/auth");
+if (!config.get('jwtPrivateKey')) {
+  console.log('FATAL ERROR: jwtPrivateKey is not defined.');
+  process.exit(1);
+}
+
 
 dotenv.config();
 require("./db/db");
@@ -33,6 +41,7 @@ app.listen(port, err => {
 app.use("/api/tasks", tasks);
 app.use("/api/lists", lists);
 app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 // In terminal type "npm start" to start nodemon
 

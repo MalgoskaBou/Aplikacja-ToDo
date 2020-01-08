@@ -1,3 +1,4 @@
+const auth = require("../middleware/auth");
 const User = require("../models/user");
 const List = require("../models/list");
 const Task = require("../models/task");
@@ -12,8 +13,8 @@ router.get("/", /*[auth],*/ async (req, res) => {
     res.send(lists);
 })
 
-router.post("/", /*[auth],*/ async (req, res) => {
-    // Add new list
+router.post("/", auth, async (req, res) => {
+    // Add new list to user
     try {
         // Check if given user exist
         const user = await User.findById(req.body.userID);
