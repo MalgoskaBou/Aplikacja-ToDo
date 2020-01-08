@@ -33,7 +33,14 @@ app.use("/static", express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Define rout for tasks page
+app.get('/tasks/completed', tasks.checked);
+app.post('/tasks/:task_id', tasks.addToList);
+app.post('/tasks/:task_id', tasks.markChecked);
+app.post('/tasks/:task_id', tasks.markUnchecked);
+
 // Launch server
+const port = process.env.PORT || 3000;
 app.listen(port, err => {
   if (err) { throw err; } else { console.log(`Server running on port: ${port}`); }});
 
