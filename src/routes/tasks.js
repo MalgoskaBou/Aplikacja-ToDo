@@ -1,22 +1,11 @@
+const express = require("express");
+const router = express.Router();
+const _ = require("lodash");
 const auth = require("../middleware/auth");
+
 const Task = require("../models/task");
 const List = require("../models/list");
 const User = require("../models/user");
-// const auth = require("../middleware/auth");
-const express = require("express");
-const _ = require("lodash");
-const router = express.Router();
-// Add checked tasks to the 'Checked' List
-exports.checked = function (req, res, next) {
-    req.db.tasks.find({
-        checked: true
-    }).toArray(function (error, tasks) {
-        res.render('tasks_checked', {
-            title: 'Checked',
-            tasks: tasks || []
-        });
-    });
-};
 
 router.get("/",/*[auth],*/ async (req, res) => {
     // TODO: ObjectId validation
@@ -108,6 +97,20 @@ router.delete("/:id", async (req, res) => {
 
 module.exports = router;
 
+/*
+// Add checked tasks to the 'Checked' List
+exports.checked = function (req, res, next) {
+    req.db.tasks.find({
+        checked: true
+    }).toArray(function (error, tasks) {
+        res.render('tasks_checked', {
+            title: 'Checked',
+            tasks: tasks || []
+        });
+    });
+};
+
+
 // Add task to the certain list
 exports.addToList = function (req, res, next) {
     req.db.tasks.find({
@@ -149,3 +152,4 @@ exports.markUnchecked = function (req, res, next) {
         res.redirect('/tasks');
     })
 };
+*/
