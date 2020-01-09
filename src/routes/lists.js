@@ -1,5 +1,4 @@
 const auth = require("../middleware/auth");
-const {User} = require("../models/user");
 const {List, validateList} = require("../models/list");
 const {Task} = require("../models/task");
 const express = require("express");

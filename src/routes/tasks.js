@@ -4,14 +4,10 @@ const _ = require("lodash");
 const auth = require("../middleware/auth");
 const {Task, validateTask} = require("../models/task");
 const {List} = require("../models/list");
-const {User} = require("../models/user");
 
 router.get("/", auth, async (req, res) => {
     // Return tasks of the given user based on specific parameters
     try {
-        const user = await User.findById(req.user._id);
-        if (!user) return res.status(400).send("User not found.");
-
         let tasks;        
         if (req.query.list && req.query.checked) {
             // /tasks?list=<listId>&checked=<true/false>
@@ -26,7 +22,6 @@ router.get("/", auth, async (req, res) => {
             // /tasks
             tasks = await Task.find({ _userID: req.user._id }).select("-__v");
         }
-
         res.status(200).send(tasks);
     } catch (err) {
         res.status(500).send(err.message);
@@ -36,17 +31,17 @@ router.get("/", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
     // Add task to given list
     try {
-        const list = await List.findOne({$and: [{ _userID: req.body.userID}, {_id: req.body.listID }]});
+        const list = await List.findOne({$and: [{ _userID: req.user._id}, {_id: req.body.listID }]});
         if (!list) return res.status(400).send("List not found.");
 
-        const savedTasks = await Task.find({ _userID: req.body.userID });
+        const savedTasks = await Task.find({ _userID: req.user._id });
         if (savedTasks.length >= 15) return res.status(400).send("The user has reached the limit (max 15 tasks per user).");
 		
 		const { error } = validateTask(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
         const task = new Task({
-        	_userID: req.body.userID,
+        	_userID: req.user._id,
         	_listID: req.body.listID,
         	name: req.body.name
         });
@@ -62,7 +57,7 @@ router.delete("/:id", auth, async (req, res) => {
     try {
         const task = await Task.findById(req.params.id);
         if (!task) return res.status(400).send("Task not found.");
-        if (task._userID != req.body.userID) return res.status(400).send("Task not found.");
+        if (task._userID != req.user._id) return res.status(400).send("Task not found.");
 
     	await Task.deleteOne({ _id: req.params.id });
     	res.status(200).send("Task is successfully removed.");
@@ -76,7 +71,7 @@ router.patch("/:id", auth, async (req, res) => {
 	try {
         const task = await Task.findById(req.params.id);
         if (!task) return res.status(400).send("Task not found.");
-        if (task._userID != req.body.userID) return res.status(400).send("Task not found.");
+        if (task._userID != req.user._id) return res.status(400).send("Task not found.");
 	
 		task.checked = !task.checked;
 		await task.save();
@@ -91,11 +86,11 @@ router.patch("/:id/move_to/:listID", auth, async (req, res) => {
 	try {
         const task = await Task.findById(req.params.id);
         if (!task) return res.status(400).send("Task not found.");
-		if (task._userID != req.body.userID) return res.status(400).send("Task not found.");
+		if (task._userID != req.user._id) return res.status(400).send("Task not found.");
 
 		const list = await List.findById(req.params.listID);
 		if (!list) return res.status(400).send("List not found.");
-		if (list._userID !=req.body.userID) return res.status(400).send("List not found.");
+		if (list._userID !=req.user._id) return res.status(400).send("List not found.");
 
 		if (task._listID === list._id) return res.status(400).send("The task is already in the given list.");
 		
