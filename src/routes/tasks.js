@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
 const auth = require("../middleware/auth");
-
 const {Task, validateTask} = require("../models/task");
 const {List} = require("../models/list");
 const {User} = require("../models/user");
@@ -10,34 +9,25 @@ const {User} = require("../models/user");
 router.get("/", auth, async (req, res) => {
     // Return tasks of the given user based on specific parameters
     try {
-        const queryObj = req.query;
-        if (queryObj.user) {
-            const user = await User.findById(queryObj.user);
-            let tasks;
-            if (!user) {
-                return res.status(400).send("User not found.");
-            } else {
-                if (queryObj.list && queryObj.checked) {
-                    // /tasks?user=<userId>&list=<listId>&checked=<true/false>
-                    tasks = await Task.find({_userID: queryObj.user, _listID: queryObj.list, checked: queryObj.checked}).select("-__v");
-                } else if (queryObj.list) {
-                    // /tasks?user=<userId>&list=<listId>
-                    tasks = await Task.find({_userID: queryObj.user, _listID: queryObj.list}).select("-__v");
-                } else if (queryObj.checked) {
-                    // /tasks?user=<userId>&checked=<true/false>
-                    tasks = await Task.find({_userID: queryObj.user, checked: queryObj.checked}).select("-__v");
-                } else {
-                    // /tasks?user=<userId>
-                    tasks = await Task.find({ _userID: queryObj.user }).select("-__v");
-                }
-                res.status(200).send(tasks);
-            }
+        const user = await User.findById(req.user._id);
+        if (!user) return res.status(400).send("User not found.");
+
+        let tasks;        
+        if (req.query.list && req.query.checked) {
+            // /tasks?list=<listId>&checked=<true/false>
+            tasks = await Task.find({$and: [{_userID: req.user._id}, {_listID: req.query.list}, {checked: req.query.checked}]}).select("-__v");
+        } else if (req.query.list) {
+             // /tasks?list=<listId>
+            tasks = await Task.find({$and: [{_userID: req.user._id}, {_listID: req.query.list}]}).select("-__v");
+        } else if (req.query.checked) {
+            // /tasks?checked=<true/false>
+            tasks = await Task.find({$and: [{_userID: req.user._id}, {checked: req.query.checked}]}).select("-__v");
         } else {
-            // /tasks?userrr=5df1ba13a325462fdc2e2558
-            // /tasks?checked=true
-            // etc
-            res.status(400).send("Invalid endpoint.");
+            // /tasks
+            tasks = await Task.find({ _userID: req.user._id }).select("-__v");
         }
+
+        res.status(200).send(tasks);
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -46,9 +36,6 @@ router.get("/", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
     // Add task to given list
     try {
-        const user = await User.findById(req.body.userID);
-        if (!user) return res.status(400).send("User not found.");
-
         const list = await List.findOne({$and: [{ _userID: req.body.userID}, {_id: req.body.listID }]});
         if (!list) return res.status(400).send("List not found.");
 

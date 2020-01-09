@@ -5,16 +5,15 @@ const {Task} = require("../models/task");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", [auth], async (req, res) => {
+router.get("/", auth, async (req, res) => {
     // Return all lists belonging to the given users
     try {
-        const user = await User.find({"_userID": req.body.userID});
+        const user = await User.find({"_id": req.user._id});
         if (!user) return  res.status(400).send("User not found.");
 
-        const lists = await List.find({"_userID": req.body.userID}).select("-__v");
+        const lists = await List.find({"_userID": req.user._id}).select("-__v");
         res.send(lists);
     } catch (error) {
-        // WHAT STATUS CODE SHOULD BE USED?
         res.status(400).send(error.message);
     }
 })
@@ -45,7 +44,7 @@ router.post("/", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
     // Remove the list and all tasks from that list
     try {
-        const user = await User.find({"_userID": req.body.userID});
+        const user = await User.find({"_userID": req.user._id});
         if (!user) return  res.status(400).send("User not found.");
 
         const list = await List.findById(req.params.id);
