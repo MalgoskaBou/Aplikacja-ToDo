@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Joi = require("@hapi/joi");
+const JoiObjectId = require("joi-objectid");
+validateObjectId = JoiObjectId(Joi);
 
 const listSchema = new mongoose.Schema({
   _userID: {
@@ -17,10 +19,9 @@ const listSchema = new mongoose.Schema({
 
 const List = mongoose.model("List", listSchema);
 
-Joi.objectId = require("joi-objectid")(Joi);
 function validateList(list) {
   const schema = Joi.object({
-    _userID: Joi.objectId(),
+    userID: validateObjectId(),
     name: Joi.string()
       .min(1)
       .max(30)

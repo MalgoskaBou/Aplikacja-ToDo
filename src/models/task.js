@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Joi = require("@hapi/joi");
+const JoiObjectId = require("joi-objectid");
+validateObjectId = JoiObjectId(Joi);
 
 const taskSchema = new mongoose.Schema({
   _userID: {
@@ -26,11 +28,10 @@ const taskSchema = new mongoose.Schema({
 
 const Task = mongoose.model("Task", taskSchema);
 
-Joi.objectId = require("joi-objectid")(Joi);
 function validateTask(task) {
   const schema = Joi.object({
-    _userID: Joi.objectId().required(),
-    _listID: Joi.objectId().required(),
+    userID: validateObjectId(),
+    listID: validateObjectId(),
     name: Joi.string()
       .min(3)
       .max(50)
@@ -40,5 +41,4 @@ function validateTask(task) {
   return schema.validate(task);
 }
 
-module.exports = Task;
-exports.validate = validateTask;
+module.exports = {Task, validateTask};
