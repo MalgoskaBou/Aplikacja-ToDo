@@ -8,9 +8,6 @@ const router = express.Router();
 router.get("/", auth, async (req, res) => {
     // Return all lists belonging to the given users
     try {
-        const user = await User.find({"_id": req.user._id});
-        if (!user) return  res.status(400).send("User not found.");
-
         const lists = await List.find({"_userID": req.user._id}).select("-__v");
         res.send(lists);
     } catch (error) {
@@ -21,17 +18,14 @@ router.get("/", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
     // Add new list to user
     try {
-        const user = await User.find({"_userID": req.body.userID});
-        if (!user) return  res.status(400).send("User not found.");
-
-        const savedLists = await List.find({"_userID": req.body.userID});
-        if (savedLists.length >= 3) return res.status(400).send("The user has reached the limit (max 3 list per user).");
+        const savedLists = await List.find({"_userID": req.user._id});
+        if (savedLists.length >= 3) return res.status(400).send("The user has reached the limit (max 3 lists per user).");
 
         const { error } = validateList(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
         const list = new List({
-            _userID: req.body.userID,
+            _userID: req.user._id,
             name: req.body.name,
         });
         await list.save();
@@ -44,12 +38,9 @@ router.post("/", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
     // Remove the list and all tasks from that list
     try {
-        const user = await User.find({"_userID": req.user._id});
-        if (!user) return  res.status(400).send("User not found.");
-
         const list = await List.findById(req.params.id);
         if (!list) return res.status(400).send("List not found.");
-        if (list._userID != req.body.userID) return res.status(400).send("List not found.");
+        if (list._userID != req.user._id) return res.status(400).send("List not found.");
 
         await List.deleteOne({_id: req.params.id});
         await Task.deleteMany({_listID: req.params.id});
@@ -64,7 +55,7 @@ router.patch("/:id", auth, async (req, res) => {
     try {
         const list = await List.findById(req.params.id);
         if (!list) return res.status(400).send("List not found.");
-        if (list._userID != req.body.userID) return res.status(400).send("List not found.");
+        if (list._userID != req.user._id) return res.status(400).send("List not found.");
 
         const { error } = validateList(req.body);
         if (error) return res.status(400).send(error.details[0].message);
