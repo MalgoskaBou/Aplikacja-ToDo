@@ -32,9 +32,10 @@ userSchema.methods.generateAuthToken = function() {
   const token = jwt.sign(
     {
       _id: this._id,
-      login: this.login
+      login: this.login,
+      email: this.email
     },
-    config.get('todo_jwtPrivateKey')
+    config.get('jwtPrivateKey')
     );
   return token;
 };
