@@ -4,17 +4,19 @@ const Joi = require("@hapi/joi");
 const listSchema = new mongoose.Schema({
   _userID: {
     type: mongoose.Schema.Types.ObjectId,
-    required: "User"
+    required: true,
+    ref: "User"
   },
   name: {
     type: String,
     required: true,
-    minlength: 1,
+    minlength: 3,
     maxlength: 30
   }
 });
 
 const List = mongoose.model("List", listSchema);
+
 Joi.objectId = require("joi-objectid")(Joi);
 function validateList(list) {
   const schema = Joi.object({
@@ -26,5 +28,5 @@ function validateList(list) {
   });
   return schema.validate(list);
 }
-module.exports = List;
-exports.validateList = validateList;
+
+module.exports = {List, validateList};

@@ -3,26 +3,14 @@ const router = express.Router();
 const _ = require("lodash");
 const auth = require("../middleware/auth");
 
-const Task = require("../models/task");
-const List = require("../models/list");
-const User = require("../models/user");
+const {Task, validateTask} = require("../models/task");
+const {List} = require("../models/list");
+const {User} = require("../models/user");
 
-router.get("/",/*[auth],*/ async (req, res) => {
-    // TODO: ObjectId validation
+router.get("/", auth, async (req, res) => {
+    // Return tasks of the given user based on specific parameters
     try {
         const queryObj = req.query;
-router.get(
-  "/",
-  /*[auth],*/
-  async (req, res) => {
-    // Return users tasks
-    const tasks = await Task.find({
-      //_userID: req.body.userID
-    }).select("-__v");
-    res.send(tasks);
-  }
-);
-
         if (queryObj.user) {
             const user = await User.findById(queryObj.user);
             let tasks;
@@ -30,226 +18,107 @@ router.get(
                 return res.status(400).send("User not found.");
             } else {
                 if (queryObj.list && queryObj.checked) {
-                    // /tasks?user=5df1ba13a325462fdc2e2558&list=5df2685e04f77f2aa48d2ddd&checked=false
+                    // /tasks?user=<userId>&list=<listId>&checked=<true/false>
                     tasks = await Task.find({_userID: queryObj.user, _listID: queryObj.list, checked: queryObj.checked}).select("-__v");
                 } else if (queryObj.list) {
-                    // /tasks?user=5df1ba13a325462fdc2e2558&list=5df2685e04f77f2aa48d2ddd
+                    // /tasks?user=<userId>&list=<listId>
                     tasks = await Task.find({_userID: queryObj.user, _listID: queryObj.list}).select("-__v");
                 } else if (queryObj.checked) {
-                    // /tasks?user=5df1ba13a325462fdc2e2558&checked=true
-                    // /tasks?user=5df1ba13a325462fdc2e2558&checked=false
+                    // /tasks?user=<userId>&checked=<true/false>
                     tasks = await Task.find({_userID: queryObj.user, checked: queryObj.checked}).select("-__v");
                 } else {
-                    // /tasks?user=5df1ba13a325462fdc2e2558
+                    // /tasks?user=<userId>
                     tasks = await Task.find({ _userID: queryObj.user }).select("-__v");
                 }
                 res.status(200).send(tasks);
             }
         } else {
             // /tasks?userrr=5df1ba13a325462fdc2e2558
-            // /tasks/
+            // /tasks?checked=true
             // etc
             res.status(400).send("Invalid endpoint.");
         }
     } catch (err) {
         res.status(500).send(err.message);
     }
-  }
-
-);
+});
 
 router.post("/", auth, async (req, res) => {
-router.post(
-  "/",
-  /*[auth],*/
-  async (req, res) => {
     // Add task to given list
     try {
-      // Check if given user exist
-      const user = await User.findById(req.body.userID);
-      // If not send 400 status
-      if (!user) return res.status(400).send("User not found.");
-      // Check if given list exist
-      const list = await List.findOne({ _userID: req.body.userID },{ _listID: req.body.listID });
-      // If not send 400 status
-      if (!list) return res.status(400).send("User not found.");
-      // Check if user reached tasks amount limit
-      const savedTasks = await Task.find({ _userID: req.body.userID });
-      if (savedTasks.length == 15)
-        return res.status(400).send("The user has reached tasks amount limit (max 15).");
-      // Create new task and save it to db
-      const task = new Task({
-        _userID: req.body.userID,
-        _listID: req.body.listID,
-        name: req.body.name
-      });
+        const user = await User.findById(req.body.userID);
+        if (!user) return res.status(400).send("User not found.");
+
+        const list = await List.findOne({ _userID: req.body.userID },{ _listID: req.body.listID });
+        if (!list) return res.status(400).send("List not found.");
+
+        const savedTasks = await Task.find({ _userID: req.body.userID });
+        if (savedTasks.length >= 15) return res.status(400).send("The user has reached the limit (max 15 tasks per user).");
+		
+		const { error } = validateTask(req.body);
+        if (error) return res.status(400).send(error.details[0].message);
+
+        const task = new Task({
+        	_userID: req.body.userID,
+        	_listID: req.body.listID,
+        	name: req.body.name
+        });
       await task.save();
-      // Send new task as a response
-      res.status(201).send(task);
-      // Check if given user exist
-      const user = await User.findById(req.body.userID);
-      // If not send 400 status
-      if (!user) return res.status(400).send("User not found.");
-      // Check if given list exist
-      const list = await List.findOne({
-        _userID: req.body.userID
-      }, {
-        _listID: req.body.listID
-      });
-      // If not send 400 status
-      if (!list) return res.status(400).send("User not found.");
-      // Check if user reached tasks amount limit
-      const savedTasks = await Task.find({
-        _userID: req.body.userID
-      });
-      if (savedTasks.length == 15)
-        return res
-          .status(400)
-          .send("The user has reached tasks amount limit (max 15).");
-      // Create new task and save it to db
-      const task = new Task({
-        _userID: req.body.userID,
-        _listID: req.body.listID,
-        name: req.body.name
-      });
-      await task.save();
-      // Send new task as a response
       res.status(201).send(task);
     } catch (error) {
-      res.status(500).send(error.message);
-      // WHAT STATUS CODE SHOULD BE USED?
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
-  }
-);
+});
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   // Remove task from tasks collection
-  try {
-    const taskID = req.params.id;
-    // Search for the task
-    const task = await Task.findById(taskID);
-    // If it doesn't exist send 400 status
-    if (!task) return res.status(400).send("Task not found.");
-    // Remove the task
-    await Task.deleteOne({ _id: taskID });
-    // Send 200 status
-    res.status(200).send("Task is successfully removed.");
-  } catch (error) {
-    // Catch error and send response
-    res.status(500).send(error.message);
-  }
-});
-  // Remove task from tasks collection
-  try {
-    const taskID = req.params.id;
-    // Search for the task
-    const task = await Task.findById(taskID);
-    // If it doesn't exist send 400 status
-    if (!task) return res.status(400).send("Task not found.");
-    // Remove the task
-    await Task.deleteOne({
-      _id: taskID
-    });
-    // Send 200 status
-    res.status(200).send("Task is successfully removed.");
-  } catch (error) {
-    // Catch error and send response
-    res.status(400).send(error.message);
-  }
+    try {
+        const task = await Task.findById(req.params.id);
+        if (!task) return res.status(400).send("Task not found.");
+        if (task._userID != req.body.userID) return res.status(400).send("Task not found.");
+
+    	await Task.deleteOne({ _id: req.params.id });
+    	res.status(200).send("Task is successfully removed.");
+    } catch (error) {
+    	res.status(400).send(error.message);
+    }
 });
 
-// Mark a single task as DONE / checked /unchecked
-router.patch("/:id", async (req, res) => {
-  // Find a task by id
-  const task = await Task.findById(req.params.id);
-  // Return error if task does not exist
-  if (!task) return res.status(400).send("Something went wrong!");
-
-  // switch checked boolean for opposite
-  task.checked = !task.checked;
-
-  //return to user updated task with 200 code
-  res.status(200).send(await task.save());
+router.patch("/:id", auth, async (req, res) => {
+	// Mark a single task as checked /unchecked
+	try {
+        const task = await Task.findById(req.params.id);
+        if (!task) return res.status(400).send("Task not found.");
+        if (task._userID != req.body.userID) return res.status(400).send("Task not found.");
+	
+		task.checked = !task.checked;
+		await task.save();
+	    res.status(200).send(task);
+	} catch (error) {
+    	res.status(400).send(error.message);
+    }
 });
 
-// Change a list of tasks
-router.patch("/:id/move_to/:listID", async (req, res) => {
-  // Find a task by id
-  const task = await Task.findById(req.params.id);
-  // Find new list
-  const list = await List.findById(req.params.listID);
+router.patch("/:id/move_to/:listID", auth, async (req, res) => {
+	// Move the task to another list
+	try {
+        const task = await Task.findById(req.params.id);
+        if (!task) return res.status(400).send("Task not found.");
+		if (task._userID != req.body.userID) return res.status(400).send("Task not found.");
 
-  // Return error if task does not exist
-  if (!task) return res.status(400).send("Task not found!");
-  // Return error if list does not exist
-  if (!list) return res.status(400).send("List not found!");
-  // Return error if task already in this list
-  if (task._listID === list.id) return res.status(400).send("Task already here.");
+		const list = await List.findById(req.params.listID);
+		if (!list) return res.status(400).send("List not found.");
+		if (list._userID !=req.body.userID) return res.status(400).send("List not found.");
 
-  // Set a task to list
-  task._listID = list.id;
-  console.log(task._listID);
-
-  // Return tu user updated task with new list and 200 code
-  res.status(200).send(await task.save());
+		if (task._listID === list._id) return res.status(400).send("The task is already in the given list.");
+		
+		task._listID = list.id;
+		await task.save();
+	    res.status(200).send(task);
+	} catch (error) {
+    	res.status(400).send(error.message);
+    }
 });
+
 
 module.exports = router;
-
-/*
-// Add checked tasks to the 'Checked' List
-exports.checked = function (req, res, next) {
-    req.db.tasks.find({
-        checked: true
-    }).toArray(function (error, tasks) {
-        res.render('tasks_checked', {
-            title: 'Checked',
-            tasks: tasks || []
-        });
-    });
-};
-
-
-// Add task to the certain list
-exports.addToList = function (req, res, next) {
-    req.db.tasks.find({
-        list_id: list_id
-    }).toArray(function (error, tasks) {
-        res.render('add_to_certain_list', {
-            list_name: `${listTitle}`,
-            lists: lists || []
-        });
-    });
-};
-
-// Mark a single task as done // checked
-exports.markChecked = function (req, res, next) {
-    if (!req.body.checked) return next(new Error('Param is missing'));
-    const checked = req.body.checked === 'true';
-    req.db.tasks.updateById(req.task._id, {
-        $set: {
-            checked: checked
-        }
-    }, function (error, count) {
-        if (error) return next(error);
-        if (count !== 1) return next(new Error('Something went wrong.'));
-        res.redirect('/tasks');
-    })
-};
-
-// Mark a single task as not done // unchecked
-exports.markUnchecked = function (req, res, next) {
-    if (!req.body.checked) return next(new Error('Param is missing'));
-    const unchecked = req.body.checked === 'false';
-    req.db.tasks.updateById(req.task._id, {
-        $set: {
-            checked: unchecked
-        }
-    }, function (error, count) {
-        if (error) return next(error);
-        if (count !== 1) return next(new Error('Something went wrong.'));
-        res.redirect('/tasks');
-    })
-};
-*/

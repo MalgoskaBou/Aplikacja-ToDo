@@ -1,24 +1,21 @@
 const Joi = require("@hapi/joi");
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const Joi = require('@hapi/joi');
 const _ = require('lodash');
-const {userSchema} = require('../models/user');
+const {User, validateUser} = require('../models/user');
 const express = require('express');
-const auth = require('../middleware/auth');
-// const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let user = await userSchema.findOne({ login: req.body.login });
+    let user = await User.findOne({
+        login: req.body.login });
     if (!user) return res.status(400).send('Invalid login or password.');
   
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send('Invalid login or password.');
-    // header-x dodatkowy parametr
+   
     const token = user.generateAuthToken();
     res.send(token);
   });
@@ -35,7 +32,6 @@ router.post("/", async (req, res) => {
           .max(1024)
           .required()
       });
-
       return schema.validate(req);
   }
 

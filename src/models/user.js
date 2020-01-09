@@ -1,17 +1,23 @@
 const config = require('config');
-const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const Joi = require("@hapi/joi");
-const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   login: {
     type: String,
     required: true,
     unique: true,
     minlength: 3,
     maxlength: 30
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+    minlength: 8,
+    maxlength: 255
   },
   password: {
     type: String,
@@ -20,19 +26,18 @@ const userSchema = new Schema({
     maxlength: 1024
   }
 });
-function validateUser(user) {
-  const schema = Joi.object({
-    login: Joi.string()
-      .min(3)
-      .max(30)
-      .required(),
-    password: Joi.string()
-      .min(5)
-      .max(1024)
-      .required()
-  });
-  return schema.validate(user);
-}
+
+userSchema.methods.generateAuthToken = function() {
+  // Generate an auth token for the user
+  const token = jwt.sign(
+    {
+      _id: this._id,
+      login: this.login
+    },
+    config.get('todo_jwtPrivateKey')
+    );
+  return token;
+};
 
 userSchema.pre("save", async function(next) {
   // Hash the password before saving the user model
@@ -44,18 +49,25 @@ userSchema.pre("save", async function(next) {
   next();
 });
 
-userSchema.methods.generateAuthToken = function() {
-  // Generate an auth token for the user
-  const token = jwt.sign(
-    {
-      _id: this._id,
-      login: this.login,
-      password: this.password
-    },
-    config.get('jwtPrivateKey')
-    );
-  return token;
-};
+const User = mongoose.model("User", userSchema);
 
-module.exports = mongoose.model("User", userSchema);
-exports.validate = validateUser;
+function validateUser(user) {
+  const schema = Joi.object({
+    login: Joi.string()
+      .min(3)
+      .max(30)
+      .required(),
+      email: Joi.string()
+      .min(8)
+      .max(255)
+      .required()
+      .email(),
+    password: Joi.string()
+      .min(5)
+      .max(1024)
+      .required()
+  });
+  return schema.validate(user);
+}
+
+module.exports = {User, validateUser};
