@@ -49,7 +49,7 @@ router.post("/", auth, async (req, res) => {
         const user = await User.findById(req.body.userID);
         if (!user) return res.status(400).send("User not found.");
 
-        const list = await List.findOne({ _userID: req.body.userID, _listID: req.body.listID });
+        const list = await List.findOne({$and: [{ _userID: req.body.userID}, {_id: req.body.listID }]});
         if (!list) return res.status(400).send("List not found.");
 
         const savedTasks = await Task.find({ _userID: req.body.userID });
