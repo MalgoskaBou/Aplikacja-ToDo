@@ -17,11 +17,11 @@ router.get("/me", auth, async (req, res) => {
 router.post('/', async (req, res) => {
 	  // Register new user
 	  try {
-		let user = await User.findOne({ email: req.body.email });
-		if (user) return res.status(400).send("That user already exists!");
-
 		const {error} = validateUser(req.body);
 		if (error) return res.status(400).send(error.details[0].message);
+
+		let user = await User.findOne({ email: req.body.email });
+		if (user) return res.status(400).send("That user already exists!");
 
 		user = new User(_.pick(req.body, ["login", "email", "password"]));
 		await user.save();
