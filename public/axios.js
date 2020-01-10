@@ -52,10 +52,10 @@ const getDataUnchecked = () => {
 
 // REGISTER /  method POST
 const sendData = () => {
-    const login = document.getElementById('formGroupExampleInput').addEventListener('input', function (e) {
-        const val = this.value;
-        console.log(val);
-    });
+    const login = document.getElementById('formGroupExampleInput')[0].value;
+
+    console.log("login" + login);
+
     const email = document.getElementById('exampleInputEmail1').addEventListener('input', (evt) => {
         save(this.value);
     });
