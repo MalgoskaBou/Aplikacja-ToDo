@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo api</title>
+</head>
+
+<body>
+    <h1> <b>Todo Application (Backend)</b> </h1>
+    <br><br>
+
+    <p><i>Project was created in a team work during the CodersCamp bootcamp.</i></p>
+    <p>Backend following REST architecture made on Express framework using MongoDB as database and built tools to use
+        sugary
+        Javascript. We've used Express, Body Parser and Mongoose packages.</p>
+    <p>You can find the app <a href="https://cc19todoapp.herokuapp.com">here</a>. Be careful, Back End is running on
+        Heroku (dyno sleep
+        mode).</p>
+    <br>
+
+    <h2><b>Documentation</b></h2>
+
+    <p>This is only simple todo list REST api.</p>
+    <p>User only able to access their own ToDo list.</p>
+    <br>
+
+    <h3><b>Users Endpoint</b></h3>
+    <p>Input params:</p>
+
+    <p>- login (String)</p>
+    <p>- email (String)</p>
+    <p>- password (String)</p>
+    <br>
+
+    <p>POST "api/users" - Register new user</p>
+    <p>POST "api/users/" - register new user</p>
+    <p>GET "api/users/me" - get information about users account</p>
+    <p>POST "api/auth/" - login user (in req.body email and password)</p>
+    <br>
+
+    <h3><b>ToDo Endpoint</b></h3>
+    <p>Input params:</p>
+    <p>- \_userID (mongoose.Schema.Types.ObjectId)</p>
+    <p>- \_listID (mongoose.Schema.Types.ObjectId)</p>
+    <p>- name (String)</p>
+    <p>- checked (Boolean)</p>
+    <br>
+
+    <p>GET "api/lists/" - get all user's lists</p>
+    <p>POST "api/lists/" - add new list</p>
+    <p>DELETE "api/lists/:listID" - delete user's list</p>
+    <p>PATCH "api/lists/:listID" - change list's name</p>
+    <br>
+    <p>POST api/tasks / add new task to list</p>
+    <p>DELETE api/tasks/:id / delete task from list</p>
+    <p>PATCH api/tasks/:id / Mark a single task as checked or unchecked</p>
+    <p>PATCH api/tasks/:id/move_to/:listID / Move a task to another list</p>
+    <p>DELETE api/tasks/:taskID - delete task</p>
+    <br>
+    <p>GET "api/tasks/" - get all user's tasks</p>
+    <p>GET "api/tasks?checked=true(/false)" - get all user's tasks that are checked(/unchecked)</p>
+    <p>GET "api/tasks?list=listID" - get all user's tasks that belong to list with id equal to "listID"</p>
+    <p>GET "api/tasks?list=listID&checked=true(/false)" - get all user's tasks that belong to list with id equal to
+        "listID" and are checked(/unchecked)
+    </p>
+
+    <h2><b>Authors</b></h2>
+    <br>
+    <p>Created by CodersCamp's members under the supervision of <a
+            href="https://github.com/MalgoskaBou">MalgoskaBou</a>:</p>
+    <p> <a href="https://github.com/IevgeniiaAbdulina">Ievgeniia Abdulina</a></p>
+    <p> <a href="https://github.com/Crazysh8">Iwona</a></p>
+    <p> <a href="https://github.com/dariaka">Daria Kawalec</a></p>
+    <p><a href="https://github.com/kvviecien">Olimpia Kwiecień</a></p>
+    <p> <a href="https://github.com/magdalenaszczech">Magdalena Szczech</a></p>
+
+</body>
+
+</html>
