@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 });
 
 // AXIOS GLOBALS 
-axios.defaults.headers.common['X-Auth-Token'] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTE4NjhjZTExZjBmZDAwMTc4ZWFmMjgiLCJsb2dpbiI6IkpvaG5ueUJyYXZvMDA3IiwiZW1haWwiOiJqb2hubnkwMDdAYnJhdm8uY29tIiwiaWF0IjoxNTc4NjYwNDQ2fQ.Ecu9bj-qUX2vmRWESmuLyIyH3wHK1s4ADoF-x6F49W4";
+axios.defaults.headers.common['x-auth-token'] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTE4NjhjZTExZjBmZDAwMTc4ZWFmMjgiLCJsb2dpbiI6IkpvaG5ueUJyYXZvMDA3IiwiZW1haWwiOiJqb2hubnkwMDdAYnJhdm8uY29tIiwiaWF0IjoxNTc4NjYwNDQ2fQ.Ecu9bj-qUX2vmRWESmuLyIyH3wHK1s4ADoF-x6F49W4";
 
 
 // // // NAVBAR
