@@ -11,8 +11,13 @@ require("./startup/routes")(app);
 require("./startup/prod")(app);
 
 app.use(express.static(__dirname.replace("src", "") + "public"));
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname.replace("src", "") + "public/index.html");
+});
+
+app.get("/api", (req, res) => {
+  res.sendFile(__dirname.replace("src", "") + "public/documentation.html");
 });
 
 // Launch server
