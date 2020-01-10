@@ -6,30 +6,36 @@ const express = require('express');
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-    let user = await User.findOne({
-        login: req.body.login });
-    if (!user) return res.status(400).send('Invalid login or password.');
-  
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).send('Invalid login or password.');
-   
-    const token = user.generateAuthToken();
-    res.send(token);
-  });
+    try {
+        const { error } = validate(req.body);
+        if (error) return res.status(400).send(error.details[0].message);
 
-  function validate (req) {
-      const schema = Joi.object ({
-          login: Joi.string()
-          .min(3)
-          .max(30)
-          .required()
-          .login(),
-          password: Joi.string()
-          .min(5)
-          .max(1024)
-          .required()
-      });
-      return schema.validate(req);
-  }
+        let user = await User.findOne({ email: req.body.email });
+        if (!user) return res.status(400).send('Invalid login or password.');
+  
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if (!validPassword) return res.status(400).send('Invalid login or password.');
+   
+        const token = user.generateAuthToken();
+        res.send(token); 
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+});
+
+function validate (req) {
+    const schema = Joi.object ({
+        email: Joi.string()
+            .min(8)
+            .max(255)
+            .required()
+            .email(),
+        password: Joi.string()
+            .min(5)
+            .max(1024)
+            .required()
+    });
+     return schema.validate(req);
+}
 
   module.exports = router;
