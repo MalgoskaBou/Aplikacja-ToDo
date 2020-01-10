@@ -9,6 +9,7 @@ require("./startup/db")();
 require("./startup/config")();
 require("./startup/validation")();
 require("./startup/routes")(app);
+require("./startup/prod")(app);
 
 // Launch server
 const server = app.listen(port, err => {
