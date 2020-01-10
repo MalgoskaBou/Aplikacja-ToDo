@@ -79,12 +79,13 @@
                             <div class="form-group">
                                 <label for="formGroupExampleInput">Your Name</label>
                                 <input type="text" class="form-control" id="formGroupExampleInput"
-                                    placeholder="First name" autocomplete="username">
+                                    placeholder="First name" autocomplete="username" value="">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Email address</label>
                                 <input type="email" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email">
+                                    aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email"
+                                    value="">
                                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with
                                     anyone
                                     else.</small>
@@ -92,9 +93,10 @@
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Password</label>
                                 <input type="password" class="form-control" id="exampleInputPassword1"
-                                    placeholder="Password" autocomplete="current-password">
+                                    placeholder="Password" autocomplete="current-password" value="">
                             </div>
-                            <button id="post-sign-up" type="submit" class="btn btn-primary">Submit</button>
+                            <button id="post-sign-up" type="submit" class="btn btn-primary"
+                                onclick="getLoginValue()">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -151,8 +153,8 @@
 
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1">List Title</label>
-                                        <select id="post-task-to-list" class="form-control"
-                                            id="exampleFormControlSelect1">
+                                        <select id="exampleFormControlSelect1" class="form-control"
+                                            onclick="getSelectedList()">
                                             <option selected>Choose list...</option>
                                             <option value="1">List 1</option>
                                             <option value="2">List 2</option>

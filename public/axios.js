@@ -1,16 +1,13 @@
-// Frontend connection with backend with axios
-
-
 // AXIOS INSTANCE
 const axiosInstance = axios.create({
     baseURL: 'https://cc19todoapp.herokuapp.com'
 });
 
 // AXIOS GLOBALS 
-axios.defaults.headers.common['x-auth-token'] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTE4NjhjZTExZjBmZDAwMTc4ZWFmMjgiLCJsb2dpbiI6IkpvaG5ueUJyYXZvMDA3IiwiZW1haWwiOiJqb2hubnkwMDdAYnJhdm8uY29tIiwiaWF0IjoxNTc4NjYwNDQ2fQ.Ecu9bj-qUX2vmRWESmuLyIyH3wHK1s4ADoF-x6F49W4";
+// axios.defaults.headers.common['x-auth-token'] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTE4NjhjZTExZjBmZDAwMTc4ZWFmMjgiLCJsb2dpbiI6IkpvaG5ueUJyYXZvMDA3IiwiZW1haWwiOiJqb2hubnkwMDdAYnJhdm8uY29tIiwiaWF0IjoxNTc4NjYwNDQ2fQ.Ecu9bj-qUX2vmRWESmuLyIyH3wHK1s4ADoF-x6F49W4";
 
 
-// // // NAVBAR
+// NAVBAR
 
 //TASKS / method GET
 // All tasks
@@ -40,32 +37,27 @@ const getDataUnchecked = () => {
         });
 };
 
-// SIGN OUT / method POST ==== we have no logic for sign out ?
-// sendSignOut = () => {
-//     axiosInstance.post("/api/auth/:id", { 
-//             userId: String
-//         })
-//         .then(response => {
-//             console.log(response);
-//         });
-// };
-
 // REGISTER /  method POST
+
+// function getLoginValue() {
+//     const login = document.getElementById("formGroupExampleInput").value;
+//     const email = document.getElementById('exampleInputEmail1').value;
+//     const password = document.getElementById('exampleInputPassword1').value;
+//     console.log("This is my login " + login + email + password);
+// }
+
+// login: "Johnny Bravo",
+//     email: "johnny007@bravo.com",
+//     password: "0hMama"
+
 const sendData = () => {
-    const login = document.getElementById('formGroupExampleInput')[0].value;
-
-    console.log("login" + login);
-
-    const email = document.getElementById('exampleInputEmail1').addEventListener('input', (evt) => {
-        save(this.value);
-    });
-    const password = document.getElementById('exampleInputPassword1').addEventListener('input', (evt) => {
-        save(this.value);
-    });
-    axiosInstance.post("/api/auth/", {
-            login: login,
-            email: email,
-            password: password
+    const loginUser = document.getElementById("formGroupExampleInput").value;
+    const emailUser = document.getElementById('exampleInputEmail1').value;
+    const passwordUser = document.getElementById('exampleInputPassword1').value;
+    axiosInstance.post("/api/users/", {
+            login: loginUser,
+            email: emailUser,
+            password: passwordUser
         }).then(response => {
             console.log(response);
         })
@@ -119,6 +111,14 @@ const checkTask = () => {
 };
 
 // ADD TASK TO A GIVEN LIST / method POST 
+function getSelectedList() {
+    const list = document.getElementById("exampleFormControlSelect1");
+    const option = list.options[list.selectedIndex].text;
+    const txt = document.getElementById("exampleFormControlTextarea1").value;
+    const selectedList = txt + option;
+    document.getElementById("exampleFormControlTextarea1").value = selectedList;
+}
+
 const sendTaskToList = () => {
     axiosInstance.post("/api/tasks/", {
             _userID: userID,
@@ -258,15 +258,15 @@ document.getElementById('post-sing-in').addEventListener('click', sendSignIn); /
 // ______Create new task
 document.getElementById('post-task').addEventListener('click', sendDataTask);
 // ______Checked / Unchecked tasks
-document.getElementById('customCheck1').addEventListener('change', checkTask);
+document.getElementById('inlineCheckbox1').addEventListener('change', checkTask);
 // ______Add task to list
-document.getElementById('post-task-to-list').addEventListener('change', sendTaskToList);
+document.getElementById('exampleFormControlSelect1').addEventListener('change', sendTaskToList);
 // ______Move task to another list 
-document.getElementById('post-task-to-list').addEventListener('change', moveTaskFromList);
+document.getElementById('exampleFormControlSelect1').addEventListener('change', moveTaskFromList);
 // ______Remove task from list
 document.getElementById('delete-task').addEventListener('click', removeTask);
 // ______Return all lists belonging to the given users
-document.getElementById('get-all-lists').addEventListener('change', getDataAllLists); // _____Event listener type "loadend"????
+// document.getElementById('get-all-lists').addEventListener('change', getDataAllLists); // _____Event listener type "loadend"????
 // ______Create new list
 document.getElementById('post-new-list').addEventListener('click', sendDataList);
 // ______Edit list title
