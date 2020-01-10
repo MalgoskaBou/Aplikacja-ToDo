@@ -10,6 +10,11 @@ require("./startup/validation")();
 require("./startup/routes")(app);
 require("./startup/prod")(app);
 
+app.use(express.static(__dirname.replace("src", "") + "public"));
+app.get("/", (req, res) => {
+  res.sendFile(__dirname.replace("src", "") + "public/index.html");
+});
+
 // Launch server
 const server = app.listen(port, err => {
   if (err) {
@@ -18,6 +23,8 @@ const server = app.listen(port, err => {
     console.log(`Server running on port: ${port}`);
   }
 });
+
+
 
 module.exports = server;
 

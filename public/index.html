@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo api</title>
+</head>
+<body>
+<h1>Todo app API Documentation:</h1>
+<p>POST "api/users/"         - register new user</p>
+<p>GET "api/users/me"      - get information about users account</p>
+<p>POST "api/auth/"           - login user (in req.body email and password)</p>
+<p>GET "api/lists/"    - get all user's lists</p>
+<p>POST "api/lists/"    - add new list</p>
+<p>DELETE "api/lists/:listID"    - delete user's list</p>
+<P>PATCH "api/lists/:listID"      - change list's name</P>
+<p>GET "api/tasks/"    - get all user's tasks</p>
+<p>GET "api/tasks?checked=true(/false)"    - get all user's tasks that are checked(/unchecked)</p>
+<p>GET "api/tasks?list=listID"    - get all user's tasks that belong to list with id equal to "listID"</p>
+<p>GET "api/tasks?list=listID&checked=true(/false)"    - get all user's tasks that belong to list with id equal to "listID" and are checked(/unchecked)</p>
+
+
+
+
+
+
+
+
+
+DELETE api/tasks/:taskID    - usuwanie taska
+PATCH api/tasks/:taskID      - toggle checked/unchecked
+PATCH api/tasks/:taskID/move_to/:listID      - przenosimy task do innej listy
+
+
+
+
+    
+</body>
+</html>
