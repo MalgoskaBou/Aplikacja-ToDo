@@ -21,7 +21,6 @@
 <body>
 
     <!-- Navbar -->
-
     <nav class="navbar navbar-default navbar-fixed-top navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="#">ToDo</a>
@@ -58,9 +57,10 @@
         </div>
     </nav>
 
+    <!-- App body style -->
     <div id="app-body" class="container-fluid">
         <div class="row flex-xl-nowrap">
-            <div class="col-md-9 col-xl-8 py-md-3 bd-content" role="main">
+            <div class="col-md-12 col-xl-9 py-md-3 bd-content" role="main">
 
                 <!-- Title -->
                 <div class="header">
@@ -70,51 +70,65 @@
                     </div>
                 </div>
 
-                <div class="tasks-cards">
-                    <div class="card-columns">
-                        <div class="card">1</div>
-                        <div class="card">1</div>
-                        <div class="card">1</div>
-                        <div class="card">1</div>
-                        <div class="card">1</div>
-                        <div class="card">1</div>
-                        <div class="card">1</div>
-                        <div class="card">1</div>
+                <!-- Sign In Form -->
+                <div id="show-login" class="container">
+                    <div class="row">
+                        <form>
+                            <h3>Sign Up</h3>
+
+                            <div class="form-group">
+                                <label for="formGroupExampleInput">Your Name</label>
+                                <input type="text" class="form-control" id="formGroupExampleInput"
+                                    placeholder="First name" autocomplete="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email">
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with
+                                    anyone
+                                    else.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1"
+                                    placeholder="Password" autocomplete="current-password">
+                            </div>
+                            <button id="post-sign-up" type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
 
+                <!-- Tasks list -- card -->
+                <div class="tasks-cards">
+                    <div class="card-columns">
+                        <div class="card border-primary" style="max-width: 20rem; min-width: 14rem;">
+                            <!-- Header task-->
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 id="name-list" class="card-title text-primary">List Title 1</h5>
+                                <div id="ic-list" class="ic-list d-flex justify-content-end">
+                                    <button id="patch-list-title" class="btn"><i class="fa fa-pencil"></i></button>
+                                    <button id="delete-list" class="btn"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
+                            <!-- Body task-->
+                            <div class="card-body d-flex justify-content-between align-self-start">
+                                <input type="checkbox" class="form-check-input checkbox" id="inlineCheckbox1"
+                                    value="unchecked">
+                                <p class="card-text mb-2 text-muted">Frna sodales dapibus jhkvner.</p>
+                                <div id="buttons" class="d-inline-flex justify-content-end align-self-start">
+                                    <button type="button" class="btn" data-toggle="modal"
+                                        data-target="#exampleModalCenter"><i class="fa fa-pencil"></i></button>
+                                    <button id="delete-task" class="btn"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
     </div>
-
-    <!-- Sign In Page -->
-    <!-- <div id="show-login" class="container">
-        <div class="row">
-            <form>
-                <h3>Sign Up</h3>
-
-                <div class="form-group">
-                    <label for="formGroupExampleInput">Your Name</label>
-                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="First name"
-                        autocomplete="username">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                        placeholder="Enter email" autocomplete="email">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                        else.</small>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
-                        autocomplete="current-password">
-                </div>
-                <button id="post-sign-up" type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </div> -->
 
     <!-- Bootstrap Modal -- 'Add and edit task' popup prompt -->
     <div class="container">
@@ -157,101 +171,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Title task lists page-->
-    <!-- <div class="container">
-        <div class="row">
-            <div class="page-header text-center">
-                <h1 class="h3 text-primary" style="font-weight: bold;">ToDo List</h1>
-                <p class="text-muted">Save your notes here</p>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Tasks list -- card -->
-    <div class="container">
-        <div id="get-all-lists" class="row">
-            <div class="card-columns">
-
-
-                <div class="card border-primary">
-                    <div class="card-header d-flex justify-content-between">
-                        <h5 id="name-list" class="card-title text-primary">List Title 1</h5>
-                        <div id="ic-list" class="ic-list">
-                            <button id="patch-list-title" class="btn"><i class="fa fa-pencil"></i></button>
-                            <button id="delete-list" class="btn"><i class="fa fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <ul id="tasks" class="list-group list-group-flush form-check">
-                            <li class="row list-group-item d-flex justify-content-between">
-                                <input class="form-check-input" type="checkbox" value="" id="customCheck1">
-                                <p class="col-8 col-sm-6">Frna sodales dapibus jhkvner.kjghkler emnrgbekjrg
-                                    ejkrgnkejrg
-                                    ekrjgbkerg qkfn. f
-                                    kbfqkwjebfkqwbrlghbqerhbgher.</p>
-                                <div id="buttons" class="d-flex justify-content-between align-self-start">
-                                    <button type="button" class="btn" data-toggle="modal"
-                                        data-target="#exampleModalCenter"><i class="fa fa-pencil"></i></button>
-                                    <button id="delete-task" class="btn"><i class="fa fa-trash"></i></button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class=" card border-primary">
-                    <div class="card-header d-flex justify-content-between">
-                        <h5 class="card-title text-primary">List Title 2</h5>
-                        <div id="ic-list" class="ic-list">
-                            <button id="patch-list-title" class="btn"><i class="fa fa-pencil"></i></button>
-                            <button id="delete-list" class="btn"><i class="fa fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <ul id="tasks" class="list-group list-group-flush form-check">
-                            <li class="list-group-item d-flex justify-content-between">
-                                <input class="form-check-input" type="checkbox" value="" id="customCheck1">
-                                <p>Frna sodales dapibus.</p>
-                                <div id="buttons" class="d-flex justify-content-between">
-                                    <button type="button" class="btn" data-toggle="modal"
-                                        data-target="#exampleModalCenter"><i class="fa fa-pencil"></i></button>
-                                    <button id="delete-task" class="btn"><i class="fa fa-trash"></i></button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card border-primary">
-                    <div class="card-header d-flex justify-content-between">
-                        <h5 class="card-title text-primary">List Title 2</h5>
-                        <div id="ic-list" class="ic-list">
-                            <button id="patch-list-title" class="btn"><i class="fa fa-pencil"></i></button>
-                            <button id="delete-list" class="btn"><i class="fa fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <ul id="tasks" class="list-group list-group-flush form-check">
-                            <li class="list-group-item d-flex justify-content-between">
-                                <input class="form-check-input" type="checkbox" value="" id="customCheck1">
-                                <p>Frna sodales dapibus.</p>
-                                <div id="buttons" class="d-flex justify-content-between">
-                                    <button type="button" class="btn" data-toggle="modal"
-                                        data-target="#exampleModalCenter"><i class="fa fa-pencil"></i></button>
-                                    <button id="delete-task" class="btn"><i class="fa fa-trash"></i></button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-
-
 
 
     <!-- Bootstrap Scripts -->
