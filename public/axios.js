@@ -39,18 +39,14 @@ const getDataUnchecked = () => {
 
 // REGISTER /  method POST
 
-// function getLoginValue() {
-//     const login = document.getElementById("formGroupExampleInput").value;
-//     const email = document.getElementById('exampleInputEmail1').value;
-//     const password = document.getElementById('exampleInputPassword1').value;
-//     console.log("This is my login " + login + email + password);
-// }
+function getLoginValue() {
+    const login = document.getElementById("formGroupExampleInput").value;
+    const email = document.getElementById('exampleInputEmail1').value;
+    const password = document.getElementById('exampleInputPassword1').value;
+    console.log("This is my login " + login + email + password);
+}
 
-// login: "Johnny Bravo",
-//     email: "johnny007@bravo.com",
-//     password: "0hMama"
-
-const sendData = () => {
+const sendRegisterUser = () => {
     const loginUser = document.getElementById("formGroupExampleInput").value;
     const emailUser = document.getElementById('exampleInputEmail1').value;
     const passwordUser = document.getElementById('exampleInputPassword1').value;
@@ -66,21 +62,23 @@ const sendData = () => {
         });
 };
 
-// SIGN IN FORM / method POST
-const sendSignIn = () => {
+// LOG IN FORM / method POST
+const sendLogIn = () => {
+    const emailUser = document.getElementById('loginInputEmail1').value;
+    const passwordUser = document.getElementById('loginInputPassword1').value;
     axiosInstance.post("/api/auth/", {
-            email: email,
-            password: password
+            email: emailUser,
+            password: passwordUser
         })
         .then(response => {
-            showLogin(response);
+            console.log(response);
         })
         .catch(err => {
             console.log(err, err.response);
         });
 };
 
-// MODAL - CREATE NEW TASK / method POST 
+//  CREATE NEW TASK / method POST 
 const sendDataTask = () => {
     axiosInstance.post("/api/tasks/", {
             // _userID: req.body.userID,
@@ -213,16 +211,16 @@ const deleteListCard = () => {
 
 // SHOW OUTPUT IN BROWSER
 
-function showLogin(response) {
-    document.getElementById('show-login').innerHTML = `
-        <div class="form-group">
-            <label for="formGroupExampleInput">Your Name ${JSON.stringify(response.data, null, 2)}</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="First name"
-                autocomplete="username">
-        </div>
+// function showLogin(response) {
+//     document.getElementById('loginModal').innerHTML = `
+//         <div class="form-group">
+//             <label for="formGroupExampleInput">Your Name ${JSON.stringify(response.data, null, 2)}</label>
+//             <input type="text" class="form-control" id="formGroupExampleInput" placeholder="First name"
+//                 autocomplete="username">
+//         </div>
 
-    `
-};
+//     `
+// };
 
 // function showOutput(res) {
 //     document.getElementById('res').innerHTML = `
@@ -249,12 +247,10 @@ document.getElementById('get-all-tasks').addEventListener('click', getDataAll);
 document.getElementById('get-checked-tasks').addEventListener('click', getDataChecked);
 // ______All unchecked tasks
 document.getElementById('get-unchecked-tasks').addEventListener('click', getDataUnchecked);
-// ______Sign out
-// document.getElementById('post-sign-out').addEventListener('click', sendSignOut);
 // ______Register user
-document.getElementById('post-sign-up').addEventListener('click', sendData);
+document.getElementById('post-register').addEventListener('click', sendRegisterUser);
 // ______Sign in user
-document.getElementById('post-sing-in').addEventListener('click', sendSignIn); //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ?????
+document.getElementById('post-log-in').addEventListener('click', sendLogIn);
 // ______Create new task
 document.getElementById('post-task').addEventListener('click', sendDataTask);
 // ______Checked / Unchecked tasks

@@ -49,11 +49,13 @@
                     </button>
                     <button id="post-new-list" class="btn btn-outline-light my-2 my-sm-0" type="submit">New
                         List</button>
-                    <button id="post-sing-in" class="btn btn-outline-light my-2 my-sm-0" type="submit">Sing In</button>
-                    <!-- <button id="post-sign-out" class="btn btn-outline-light my-2 my-sm-0" type="submit">Sign
-                        Out</button> -->
+                    <button type="button" class="btn btn-outline-light my-2 my-sm-0" data-toggle="modal"
+                        data-target="#registerModal">Register</button>
+                    <button type="button" class="btn btn-outline-light my-2 my-sm-0" data-toggle="modal"
+                        data-target="#loginModal">Log In</button>
                 </form>
             </div>
+
         </div>
     </nav>
 
@@ -67,37 +69,6 @@
                     <div class="title">
                         <h1 class="h3 text-primary">ToDo Web Application</h1>
                         <h2 class="text-muted">Create and save your tasks here</h2>
-                    </div>
-                </div>
-
-                <!-- Sign In Form -->
-                <div id="show-login" class="container">
-                    <div class="row">
-                        <form>
-                            <h3>Sign Up</h3>
-
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">Your Name</label>
-                                <input type="text" class="form-control" id="formGroupExampleInput"
-                                    placeholder="First name" autocomplete="username" value="">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email"
-                                    value="">
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with
-                                    anyone
-                                    else.</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1"
-                                    placeholder="Password" autocomplete="current-password" value="">
-                            </div>
-                            <button id="post-sign-up" type="submit" class="btn btn-primary"
-                                onclick="getLoginValue()">Submit</button>
-                        </form>
                     </div>
                 </div>
 
@@ -132,7 +103,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap Modal -- 'Add and edit task' popup prompt -->
+    <!-- Bootstrap Modal -- Add and edit task -->
     <div class="container">
         <div class="row">
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -167,6 +138,82 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button id="post-task" type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modal -- Register In Form -->
+    <div class="container">
+        <div class="row">
+            <div id="registerModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <h3 class="modal-title" id="registerModalLabel" style="margin: 1.5em;">Register a new user</h3>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">Your Name</label>
+                                    <input type="text" class="form-control" id="formGroupExampleInput"
+                                        placeholder="First name" autocomplete="username" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email"
+                                        value="">
+                                    <small id="emailHelp" class="form-text text-muted">We'll never share your
+                                        email
+                                        with
+                                        anyone
+                                        else.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1"
+                                        placeholder="Password" autocomplete="current-password" value="">
+                                </div>
+                                <button id="post-register" type="submit" class="btn btn-primary"
+                                    onclick="getLoginValue()">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modal -- Log In Form -->
+    <div class="container">
+        <div class="row">
+            <div id="loginModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <h3 class="modal-title" id="loginModalLabel" style="margin: 1.5em;">Log In</h3>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="loginInputEmail1">Email address</label>
+                                    <input type="email" class="form-control" id="loginInputEmail1"
+                                        aria-describedby="emailHelp" placeholder="Enter email" autocomplete="email"
+                                        value="">
+                                    <small id="emailHelp" class="form-text text-muted">We'll never share your
+                                        email
+                                        with
+                                        anyone
+                                        else.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="loginInputPassword1">Password</label>
+                                    <input type="password" class="form-control" id="loginInputPassword1"
+                                        placeholder="Password" autocomplete="current-password" value="">
+                                </div>
+                                <button id="post-log-in" type="submit" class="btn btn-primary">Submit</button>
+                            </form>
                         </div>
                     </div>
                 </div>
