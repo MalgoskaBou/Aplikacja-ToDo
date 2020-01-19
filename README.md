@@ -68,4 +68,4 @@ Created by CodersCamp's members under the supervision of [@MalgoskaBou](https://
 [@Iwona](https://github.com/Crazysh8)\
 [@Daria Kawalec](https://github.com/dariaka)\
 [@Olimpia Kwiecień](https://github.com/kvviecien)\
-[@OMagdalena Szczech](https://github.com/magdalenaszczech)
+[@Magdalena Szczech](https://github.com/magdalenaszczech)
