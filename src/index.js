@@ -13,14 +13,14 @@ require("./startup/prod")(app);
 app.use(express.static(__dirname.replace("src", "") + "public"));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname.replace("src", "") + "public/index.html");
+  const targetUrl = '/api';
+  res.redirect(targetUrl);
 });
 
 app.get("/api", (req, res) => {
-  res.sendFile(__dirname.replace("src", "") + "public/documentation.html");
+  res.sendFile(__dirname.replace("src", "") + "public/docs.html");
 });
 
-// Launch server
 const server = app.listen(port, err => {
   if (err) {
     throw err;
@@ -29,8 +29,4 @@ const server = app.listen(port, err => {
   }
 });
 
-
-
 module.exports = server;
-
-// In terminal type "npm start" to start nodemon
