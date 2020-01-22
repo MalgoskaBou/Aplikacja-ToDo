@@ -24,7 +24,7 @@ Input params:
 
 > **GET** "api/users/me" - get information about users account
 
-> **POST** "api/auth/" - login user (in req.body email and password)
+> **POST** "api/auth/" - login user (in request body only email and password)
 
 ## ToDo Endpoint
 
@@ -45,21 +45,19 @@ Input params:
 
 > **GET** "api/tasks/" - get all user's tasks
 
-> **POST** api/tasks / add new task to list
+> **POST** "api/tasks/" - add new task to list
 
-> **DELETE** api/tasks/:id / delete task from list
+> **DELETE** "api/tasks/:id/" - delete task from list
 
-> **PATCH** api/tasks/:id / Mark a single task as checked or unchecked
+> **PATCH** "api/tasks/:id/" Mark a single task as checked or unchecked
 
-> **PATCH** api/tasks/:id/move_to/:listID / Move a task to another list
+> **PATCH** "api/tasks/:id/move_to/:listID/" Move a task to another list
 
 > **GET** "api/tasks?checked=true(/false)" - get all user's tasks that are checked(/unchecked)
 
 > **GET** "api/tasks?list=listID" - get all user's tasks that belong to list with id equal to "listID"
 
 > **GET** "api/tasks?list=listID&checked=true(/false)" - get all user's tasks that belong to list with id equal to "listID" and are checked(/unchecked)
-
-> **DELETE** api/tasks/:taskID - usuwanie taska PATCH api/tasks/:taskID - toggle checked/unchecked PATCH api/tasks/:taskID/move_to/:listID - przenosimy task do innej listy
 
 ## Authors
 
