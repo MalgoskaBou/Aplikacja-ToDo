@@ -1,4 +1,4 @@
 {
     "jwtPrivateKey": "password",
-    "db": "mongodb+srv://admin2019:LNwRzestDEMSOOXG@campproject-ufbnl.mongodb.net/to-do?retryWrites=true&w=majority"
+    "db": "mongodb+srv://"
 }
